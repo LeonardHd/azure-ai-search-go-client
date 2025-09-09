@@ -1,0 +1,40 @@
+# Azure AI Search Go Client via Autorest
+
+The azure sdk for Go currently does not include a client for Azure AI Search.
+
+As a temporary solution (until a first-party client is available), you can use the `autorest` tool to generate a Go client from the Azure Search REST API specifications.
+
+
+## Prerequisites
+- Go 1.20 or later
+- Autorest installed `npm install -g autorest`
+
+# Generated the clients and run sample app
+
+```bash
+
+# Clone the Azure REST API specifications repository (include API specs for autorest)
+git clone https://github.com/Azure/azure-rest-api-specs.git 
+
+# Generate the Azure Search Index client
+autorest --input-file=azure-rest-api-specs/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchindex.json --go --containing-module --output-folder=sample-app/aisearchindex --clear-output-folder
+
+# Generate the Azure Search client
+autorest --input-file=azure-rest-api-specs/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchservice.json --go --containing-module --output-folder=sample-app/aisearch --clear-output-folder
+
+# NOTE: These generated clients will NOT necessarily follow the official clients as
+# this does not apply any customizations that the official clients might have.
+
+# Create a .env file to store your Azure Search service details
+echo "AZSEARCH_ENDPOINT='https://<your-service>.search.windows.net'" > .env
+echo "AZSEARCH_API_KEY='<your-admin-or-query-key>'" >> .env
+echo "AZSEARCH_INDEX_NAME='sample-index'" >> .env
+
+
+cd sample-app
+go mod tidy
+go build ./...
+
+# Run the sample app
+set -a; source ../.env; go run .
+````
