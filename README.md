@@ -17,10 +17,10 @@ As a temporary solution (until a first-party client is available), you can use t
 git clone https://github.com/Azure/azure-rest-api-specs.git 
 
 # Generate the Azure Search Index client
-autorest --input-file=azure-rest-api-specs/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchindex.json --go --containing-module --output-folder=sample-app/searchindex --clear-output-folder
+autorest --input-file=azure-rest-api-specs/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchindex.json --go --containing-module --output-folder=sample-app/services/search/2025-09-01/searchindex --clear-output-folder
 
 # Generate the Azure Search client
-autorest --input-file=azure-rest-api-specs/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchservice.json --go --containing-module --output-folder=sample-app/searchservice --clear-output-folder
+autorest --input-file=azure-rest-api-specs/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchservice.json --go --containing-module --output-folder=sample-app/services/search/2025-09-01/searchservice --clear-output-folder
 
 # NOTE: These generated clients will NOT necessarily follow the official clients as
 # this does not apply any customizations that the official clients might have.
@@ -40,6 +40,10 @@ set -a; source ../.env; go run .
 ```
 
 ## Adjustments to `readme.go.md` in `azure-rest-api-specs`
+
+To ensure that the generated clients are more aligned with the official Azure SDK implementations,
+you can adjust the `readme.go.md` file in the `azure-rest-api-specs` repository to include
+the latest API version and any necessary customizations (autorest will pick up the custom directives).
 
 ```bash
 cp readme.go.md azure-rest-api-specs/specification/search/data-plane/Azure.Search/readme.go.md

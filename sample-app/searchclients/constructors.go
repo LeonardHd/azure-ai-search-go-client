@@ -15,8 +15,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 
-	"sample-app/searchservice"
-	"sample-app/searchindex"
+	"sample-app/services/search/2025-09-01/searchservice"
+	"sample-app/services/search/2025-09-01/searchindex"
 )
 
 // apiKeyPolicy adds the api-key header to every outbound request.

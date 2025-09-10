@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	"sample-app/searchservice"
-	"sample-app/searchindex"
+	"sample-app/services/search/2025-09-01/searchservice"
+	"sample-app/services/search/2025-09-01/searchindex"
 	"sample-app/searchclients"
 )
 
