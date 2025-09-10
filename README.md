@@ -1,8 +1,10 @@
 # Azure AI Search Go Client via Autorest
 
-The azure sdk for Go currently does not include a client for Azure AI Search.
+Microsoft's offical Go SDK does not include clients for Azure AI Search services.
 
-As a temporary solution (until a first-party client is available), you can use the `autorest` tool to generate a Go client from the Azure Search REST API specifications.
+This repository demonstrates how one could use the `autorest` tool to generate Go clients from the Azure Search REST API specifications
+themselves. While there's no official support for this approach, it can
+help avoid writing custom clients from scratch and use the generated clients in your Go applications.
 
 
 ## Prerequisites
