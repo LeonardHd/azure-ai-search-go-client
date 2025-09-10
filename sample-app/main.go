@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	"sample-app/aisearch"
-	"sample-app/aisearchindex"
+	"sample-app/searchservice"
+	"sample-app/searchindex"
 	"sample-app/searchclients"
 )
 
@@ -38,15 +38,15 @@ func main() {
 	var (
 		fieldKeyName      = "id"
 		fieldTitleName    = "title"
-		dataTypeEdmString = aisearch.SearchFieldDataTypeString
+		dataTypeEdmString = searchservice.SearchFieldDataTypeString
 		isKey             = true
 		searchable        = true
 		retrievable       = true
 	)
 
-	indexDef := aisearch.SearchIndex{
+	indexDef := searchservice.SearchIndex{
 		Name: &indexName,
-		Fields: []*aisearch.SearchField{
+		Fields: []*searchservice.SearchField{
 			{Name: &fieldKeyName, Type: &dataTypeEdmString, Key: &isKey, Filterable: ptr(true), Sortable: ptr(true), Retrievable: &retrievable},
 			{Name: &fieldTitleName, Type: &dataTypeEdmString, Searchable: &searchable, Retrievable: &retrievable},
 		},
@@ -76,8 +76,8 @@ func main() {
 		"id":    docKey,
 		"title": "Hello Azure AI Search",
 	}
-	batch := aisearchindex.IndexBatch{Actions: []*aisearchindex.IndexAction{{
-		ActionType:           ptr(aisearchindex.IndexActionTypeUpload),
+	batch := searchindex.IndexBatch{Actions: []*searchindex.IndexAction{{
+		ActionType:           ptr(searchindex.IndexActionTypeUpload),
 		AdditionalProperties: sampleDoc,
 	}}}
 
@@ -90,7 +90,7 @@ func main() {
 
 	// 3. Simple wildcard search to verify indexing
 	star := "*"
-	searchResp, err := docsClient.SearchGet(ctx, &aisearchindex.DocumentsClientSearchGetOptions{SearchText: &star}, nil, nil)
+	searchResp, err := docsClient.SearchGet(ctx, &searchindex.DocumentsClientSearchGetOptions{SearchText: &star}, nil, nil)
 	if err != nil {
 		fmt.Printf("Wildcard search failed: %v\n", err)
 		return
@@ -107,7 +107,7 @@ func main() {
 	if query == "" {
 		query = "hello" // default demo term
 	}
-	searchResp2, err := docsClient.SearchGet(ctx, &aisearchindex.DocumentsClientSearchGetOptions{SearchText: &query}, nil, nil)
+	searchResp2, err := docsClient.SearchGet(ctx, &searchindex.DocumentsClientSearchGetOptions{SearchText: &query}, nil, nil)
 	if err != nil {
 		fmt.Printf("Query search failed: %v\n", err)
 		return

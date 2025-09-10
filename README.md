@@ -9,7 +9,7 @@ As a temporary solution (until a first-party client is available), you can use t
 - Go 1.20 or later
 - Autorest installed `npm install -g autorest`
 
-# Generated the clients and run sample app
+## Generated the clients and run sample app (without adjustments for `azure-rest-api-specs` repo)
 
 ```bash
 
@@ -17,10 +17,10 @@ As a temporary solution (until a first-party client is available), you can use t
 git clone https://github.com/Azure/azure-rest-api-specs.git 
 
 # Generate the Azure Search Index client
-autorest --input-file=azure-rest-api-specs/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchindex.json --go --containing-module --output-folder=sample-app/aisearchindex --clear-output-folder
+autorest --input-file=azure-rest-api-specs/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchindex.json --go --containing-module --output-folder=sample-app/searchindex --clear-output-folder
 
 # Generate the Azure Search client
-autorest --input-file=azure-rest-api-specs/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchservice.json --go --containing-module --output-folder=sample-app/aisearch --clear-output-folder
+autorest --input-file=azure-rest-api-specs/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchservice.json --go --containing-module --output-folder=sample-app/searchservice --clear-output-folder
 
 # NOTE: These generated clients will NOT necessarily follow the official clients as
 # this does not apply any customizations that the official clients might have.
@@ -37,4 +37,14 @@ go build ./...
 
 # Run the sample app
 set -a; source ../.env; go run .
-````
+```
+
+## Adjustments to `readme.go.md` in `azure-rest-api-specs`
+
+```bash
+cp readme.go.md azure-rest-api-specs/specification/search/data-plane/Azure.Search/readme.go.md
+
+# Adjust the `readme.go.md` to include 2025-09-01 version for both clients (searchindex and searchservice)
+autorest azure-rest-api-specs/specification/search/data-plane/Azure.Search --containing-module --tag=package-2025-09-searchindex --go --go-sdk-folder=$(pwd)/go-sdk-folder
+autorest azure-rest-api-specs/specification/search/data-plane/Azure.Search --containing-module --tag=package-2025-09-searchservice --go --go-sdk-folder=$(pwd)/go-sdk-folder
+```
