@@ -3,5 +3,12 @@
 {
 	"name": "Default Linux Universal",
 	"image": "mcr.microsoft.com/devcontainers/universal:2-linux",
-	"postCreateCommand": "bash .devcontainer/post-create.sh"
+	"postCreateCommand": "bash .devcontainer/post-create.sh",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"golang.go"
+			]
+		}
+	}
 }
