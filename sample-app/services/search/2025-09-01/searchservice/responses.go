@@ -5,12 +5,6 @@
 
 package searchservice
 
-// ClientGetServiceStatisticsResponse contains the response from method Client.GetServiceStatistics.
-type ClientGetServiceStatisticsResponse struct {
-// Response from a get service statistics request. If successful, it includes service level counters and limits.
-	ServiceStatistics
-}
-
 // DataSourcesClientCreateOrUpdateResponse contains the response from method DataSourcesClient.CreateOrUpdate.
 type DataSourcesClientCreateOrUpdateResponse struct {
 // Represents a datasource definition, which can be used to configure an indexer.
@@ -124,6 +118,12 @@ type IndexesClientGetStatisticsResponse struct {
 type IndexesClientListResponse struct {
 // Response from a List Indexes request. If successful, it includes the full definitions of all indexes.
 	ListIndexesResult
+}
+
+// SearchClientGetServiceStatisticsResponse contains the response from method SearchClient.GetServiceStatistics.
+type SearchClientGetServiceStatisticsResponse struct {
+// Response from a get service statistics request. If successful, it includes service level counters and limits.
+	ServiceStatistics
 }
 
 // SkillsetsClientCreateOrUpdateResponse contains the response from method SkillsetsClient.CreateOrUpdate.

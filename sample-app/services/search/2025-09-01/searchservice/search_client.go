@@ -13,9 +13,9 @@ import (
 	"net/http"
 )
 
-// Client contains the methods for the SearchServiceClient group.
+// SearchClient contains the methods for the SearchClient group.
 // Don't use this type directly, use a constructor function instead.
-type Client struct {
+type SearchClient struct {
 	internal *azcore.Client
 	endpoint string
 }
@@ -25,27 +25,28 @@ type Client struct {
 //
 // Generated from API version 2025-09-01
 //   - RequestOptions - RequestOptions contains a group of parameters for the DataSourcesClient.CreateOrUpdate method.
-//   - options - ClientGetServiceStatisticsOptions contains the optional parameters for the Client.GetServiceStatistics method.
-func (client *Client) GetServiceStatistics(ctx context.Context, requestOptions *RequestOptions, options *ClientGetServiceStatisticsOptions) (ClientGetServiceStatisticsResponse, error) {
+//   - options - SearchClientGetServiceStatisticsOptions contains the optional parameters for the SearchClient.GetServiceStatistics
+//     method.
+func (client *SearchClient) GetServiceStatistics(ctx context.Context, requestOptions *RequestOptions, options *SearchClientGetServiceStatisticsOptions) (SearchClientGetServiceStatisticsResponse, error) {
 	var err error
 	req, err := client.getServiceStatisticsCreateRequest(ctx, requestOptions, options)
 	if err != nil {
-		return ClientGetServiceStatisticsResponse{}, err
+		return SearchClientGetServiceStatisticsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientGetServiceStatisticsResponse{}, err
+		return SearchClientGetServiceStatisticsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientGetServiceStatisticsResponse{}, err
+		return SearchClientGetServiceStatisticsResponse{}, err
 	}
 	resp, err := client.getServiceStatisticsHandleResponse(httpResp)
 	return resp, err
 }
 
 // getServiceStatisticsCreateRequest creates the GetServiceStatistics request.
-func (client *Client) getServiceStatisticsCreateRequest(ctx context.Context, requestOptions *RequestOptions, _ *ClientGetServiceStatisticsOptions) (*policy.Request, error) {
+func (client *SearchClient) getServiceStatisticsCreateRequest(ctx context.Context, requestOptions *RequestOptions, _ *SearchClientGetServiceStatisticsOptions) (*policy.Request, error) {
 	urlPath := "/servicestats"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -62,10 +63,10 @@ func (client *Client) getServiceStatisticsCreateRequest(ctx context.Context, req
 }
 
 // getServiceStatisticsHandleResponse handles the GetServiceStatistics response.
-func (client *Client) getServiceStatisticsHandleResponse(resp *http.Response) (ClientGetServiceStatisticsResponse, error) {
-	result := ClientGetServiceStatisticsResponse{}
+func (client *SearchClient) getServiceStatisticsHandleResponse(resp *http.Response) (SearchClientGetServiceStatisticsResponse, error) {
+	result := SearchClientGetServiceStatisticsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceStatistics); err != nil {
-		return ClientGetServiceStatisticsResponse{}, err
+		return SearchClientGetServiceStatisticsResponse{}, err
 	}
 	return result, nil
 }

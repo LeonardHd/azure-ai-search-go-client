@@ -49,6 +49,6 @@ the latest API version and any necessary customizations (autorest will pick up t
 cp readme.go.md azure-rest-api-specs/specification/search/data-plane/Azure.Search/readme.go.md
 
 # Adjust the `readme.go.md` to include 2025-09-01 version for both clients (searchindex and searchservice)
-autorest azure-rest-api-specs/specification/search/data-plane/Azure.Search --containing-module --tag=package-2025-09-searchindex --go --go-sdk-folder=$(pwd)/go-sdk-folder
-autorest azure-rest-api-specs/specification/search/data-plane/Azure.Search --containing-module --tag=package-2025-09-searchservice --go --go-sdk-folder=$(pwd)/go-sdk-folder
+autorest azure-rest-api-specs/specification/search/data-plane/Azure.Search --containing-module --tag=package-2025-09-searchindex --go --go-sdk-folder=$(pwd)/sample-app
+autorest azure-rest-api-specs/specification/search/data-plane/Azure.Search --containing-module --tag=package-2025-09-searchservice --go --go-sdk-folder=$(pwd)/sample-app
 ```

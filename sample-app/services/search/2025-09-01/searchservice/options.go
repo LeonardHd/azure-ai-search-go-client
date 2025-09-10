@@ -5,11 +5,6 @@
 
 package searchservice
 
-// ClientGetServiceStatisticsOptions contains the optional parameters for the Client.GetServiceStatistics method.
-type ClientGetServiceStatisticsOptions struct {
-	// placeholder for future optional parameters
-}
-
 // DataSourcesClientCreateOptions contains the optional parameters for the DataSourcesClient.Create method.
 type DataSourcesClientCreateOptions struct {
 	// placeholder for future optional parameters
@@ -156,6 +151,11 @@ type IndexesClientListOptions struct {
 type RequestOptions struct {
 // The tracking ID sent with the request to help with debugging.
 	XMSClientRequestID *string
+}
+
+// SearchClientGetServiceStatisticsOptions contains the optional parameters for the SearchClient.GetServiceStatistics method.
+type SearchClientGetServiceStatisticsOptions struct {
+	// placeholder for future optional parameters
 }
 
 // SkillsetsClientCreateOptions contains the optional parameters for the SkillsetsClient.Create method.
