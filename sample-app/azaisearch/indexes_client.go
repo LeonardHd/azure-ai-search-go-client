@@ -1,16 +1,5 @@
 package azaisearch
 
-// NOTE: These constructors use unsafe reflection to populate unexported fields
-// of the generated clients so we can keep the generated folders (aisearch,
-// aisearchindex) untouched. This is brittle: regenerating code that changes
-// internal field names will break these functions.
-
-// TODO: probably want to implement something closer to the official way of
-// doing this, see:
-// https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/batch/azbatch/custom_client.go
-// https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/containers/azcontainerregistry/custom_client.go
-// https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/storage/azqueue/queue_client.go
-
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -34,6 +23,10 @@ func NewIndexesClient(endpoint string, cred azcore.TokenCredential, options *Ind
 	return newIndexesClient(endpoint, authPolicy, options)
 }
 
+// NewIndexesClientWithSharedKey creates a new instance of IndexesClient with the specified values.
+//   - endpoint - the endpoint of the Azure AI Search service
+//   - keyCred - used to authorize requests with a shared key
+//   - options - client options, pass nil to accept the default values.
 func NewIndexesClientWithSharedKey(endpoint string, keyCred *azcore.KeyCredential, options *IndexesClientOptions) (*searchservice.IndexesClient, error) {
 
 	authPolicy := runtime.NewKeyCredentialPolicy(keyCred, "api-key", &runtime.KeyCredentialPolicyOptions{})
