@@ -6,8 +6,9 @@ import (
 	"os"
 	"time"
 
-	"sample-app/services/search/2025-09-01/searchindex"
-	"sample-app/services/search/2025-09-01/searchservice"
+	"sample-app/azaisearch"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 func ptr[T any](v T) *T { return &v }
@@ -28,7 +29,7 @@ func main() {
 	ctx := context.Background()
 
 	// 1. Create the index (if it does not already exist)
-	indexesClient, err := NewIndexesClient(endpoint, apiKey)
+	indexesClient, err := azaisearch.NewIndexesClientWithSharedKey(endpoint, azcore.NewKeyCredential(apiKey), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -37,15 +38,15 @@ func main() {
 	var (
 		fieldKeyName      = "id"
 		fieldTitleName    = "title"
-		dataTypeEdmString = searchservice.SearchFieldDataTypeString
+		dataTypeEdmString = azaisearch.SearchFieldDataTypeString
 		isKey             = true
 		searchable        = true
 		retrievable       = true
 	)
 
-	indexDef := searchservice.SearchIndex{
+	indexDef := azaisearch.SearchIndex{
 		Name: &indexName,
-		Fields: []*searchservice.SearchField{
+		Fields: []*azaisearch.SearchField{
 			{Name: &fieldKeyName, Type: &dataTypeEdmString, Key: &isKey, Filterable: ptr(true), Sortable: ptr(true), Retrievable: &retrievable},
 			{Name: &fieldTitleName, Type: &dataTypeEdmString, Searchable: &searchable, Retrievable: &retrievable},
 		},
@@ -65,7 +66,7 @@ func main() {
 	}
 
 	// 2. Index a sample document
-	docsClient, err := NewDocumentsClient(endpoint, indexName, apiKey)
+	docsClient, err := azaisearch.NewDocumentsClientWithSharedKey(endpoint, indexName, azcore.NewKeyCredential(apiKey), nil)
 	if err != nil {
 		panic(err)
 	}
@@ -75,8 +76,8 @@ func main() {
 		"id":    docKey,
 		"title": "Hello Azure AI Search",
 	}
-	batch := searchindex.IndexBatch{Actions: []*searchindex.IndexAction{{
-		ActionType:           ptr(searchindex.IndexActionTypeUpload),
+	batch := azaisearch.IndexBatch{Actions: []*azaisearch.IndexAction{{
+		ActionType:           ptr(azaisearch.IndexActionTypeUpload),
 		AdditionalProperties: sampleDoc,
 	}}}
 
@@ -89,7 +90,7 @@ func main() {
 
 	// 3. Simple wildcard search to verify indexing
 	star := "*"
-	searchResp, err := docsClient.SearchGet(ctx, &searchindex.DocumentsClientSearchGetOptions{SearchText: &star}, nil, nil)
+	searchResp, err := docsClient.SearchGet(ctx, &azaisearch.DocumentsClientSearchGetOptions{SearchText: &star}, nil, nil)
 	if err != nil {
 		fmt.Printf("Wildcard search failed: %v\n", err)
 		return
@@ -106,7 +107,7 @@ func main() {
 	if query == "" {
 		query = "hello" // default demo term
 	}
-	searchResp2, err := docsClient.SearchGet(ctx, &searchindex.DocumentsClientSearchGetOptions{SearchText: &query}, nil, nil)
+	searchResp2, err := docsClient.SearchGet(ctx, &azaisearch.DocumentsClientSearchGetOptions{SearchText: &query}, nil, nil)
 	if err != nil {
 		fmt.Printf("Query search failed: %v\n", err)
 		return
