@@ -19,7 +19,7 @@ type IndexesClientOptions struct {
 //   - options - client options, pass nil to accept the default values.
 func NewIndexesClient(endpoint string, cred azcore.TokenCredential, options *IndexesClientOptions) (*searchservice.IndexesClient, error) {
 
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{internal.TokenScope}, nil)
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{internal.TokenScope}, &policy.BearerTokenOptions{})
 	return newIndexesClient(endpoint, authPolicy, options)
 }
 

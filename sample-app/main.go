@@ -9,6 +9,7 @@ import (
 	"sample-app/azaisearch"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
 func ptr[T any](v T) *T { return &v }
@@ -21,15 +22,33 @@ func main() {
 		indexName = "sample-index"
 	}
 
-	if endpoint == "" || apiKey == "" {
-		fmt.Println("Please set AZSEARCH_ENDPOINT, AZSEARCH_API_KEY (and optional AZSEARCH_INDEX_NAME).")
+	if endpoint == "" {
+		fmt.Println("Please set AZSEARCH_ENDPOINT (and optionally AZSEARCH_API_KEY / AZSEARCH_INDEX_NAME).")
 		return
 	}
 
 	ctx := context.Background()
 
 	// 1. Create the index (if it does not already exist)
-	indexesClient, err := azaisearch.NewIndexesClientWithSharedKey(endpoint, azcore.NewKeyCredential(apiKey), nil)
+	var (
+		indexesClient *azaisearch.IndexesClient
+		err           error
+	)
+
+	// Decide auth strategy
+	useKey := apiKey != ""
+	if useKey {
+		fmt.Println("Using API Key authentication.")
+		indexesClient, err = azaisearch.NewIndexesClientWithSharedKey(endpoint, azcore.NewKeyCredential(apiKey), nil)
+	} else {
+		fmt.Println("No AZSEARCH_API_KEY provided. Falling back to Azure AD (DefaultAzureCredential).")
+		cred, credErr := azidentity.NewDefaultAzureCredential(nil)
+		if credErr != nil {
+			fmt.Printf("Failed to create DefaultAzureCredential: %v\n", credErr)
+			return
+		}
+		indexesClient, err = azaisearch.NewIndexesClient(endpoint, cred, nil)
+	}
 	if err != nil {
 		panic(err)
 	}
@@ -66,7 +85,17 @@ func main() {
 	}
 
 	// 2. Index a sample document
-	docsClient, err := azaisearch.NewDocumentsClientWithSharedKey(endpoint, indexName, azcore.NewKeyCredential(apiKey), nil)
+	var docsClient *azaisearch.DocumentsClient
+	if useKey {
+		docsClient, err = azaisearch.NewDocumentsClientWithSharedKey(endpoint, indexName, azcore.NewKeyCredential(apiKey), nil)
+	} else {
+		cred, credErr := azidentity.NewDefaultAzureCredential(nil)
+		if credErr != nil {
+			fmt.Printf("Failed to create DefaultAzureCredential: %v\n", credErr)
+			return
+		}
+		docsClient, err = azaisearch.NewDocumentsClient(endpoint, indexName, cred, nil)
+	}
 	if err != nil {
 		panic(err)
 	}
